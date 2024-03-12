@@ -233,7 +233,9 @@ def pregunta_13():
     E    275
     Name: _c5b, dtype: int64
     """
+
     suma_por_letra = pd.merge(tbl0, tbl2, on='_c0').groupby('_c1')['_c5b'].sum()
     suma_por_letra.name = '_c5b'
     suma_por_letra.index.name = None
     return suma_por_letra
+
