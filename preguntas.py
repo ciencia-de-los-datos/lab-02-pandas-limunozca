@@ -215,8 +215,9 @@ def pregunta_12():
     38   38                    eee:0,fff:9,iii:2
     39   39                    ggg:3,hhh:8,jjj:5
     """
-    return
-
+    tbl2['_c5'] = tbl2['_c5a'] + ':' + tbl2['_c5b'].astype(str)
+    tabla = tbl2.groupby('_c0')['_c5'].agg(lambda values: ','.join(str(v) for v in sorted(values))).reset_index()
+    return tabla
 
 def pregunta_13():
     """
@@ -232,4 +233,7 @@ def pregunta_13():
     E    275
     Name: _c5b, dtype: int64
     """
-    return
+    suma_por_letra = pd.merge(tbl0, tbl2, on='_c0').groupby('_c1')['_c5b'].sum()
+    suma_por_letra.name = '_c5b'
+    suma_por_letra.index.name = None
+    return suma_por_letra
