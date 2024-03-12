@@ -13,27 +13,25 @@ tbl0 = pd.read_csv("tbl0.tsv", sep="\t")
 tbl1 = pd.read_csv("tbl1.tsv", sep="\t")
 tbl2 = pd.read_csv("tbl2.tsv", sep="\t")
 
+#leer los archivos
 
 def pregunta_01():
     """
     ¿Cuál es la cantidad de filas en la tabla `tbl0.tsv`?
-
     Rta/
     40
-
     """
-    return
+    return len(tbl0)
+    
 
 
 def pregunta_02():
     """
     ¿Cuál es la cantidad de columnas en la tabla `tbl0.tsv`?
-
     Rta/
     4
-
     """
-    return
+    return len(tbl0.columns)
 
 
 def pregunta_03():
@@ -50,7 +48,10 @@ def pregunta_03():
     Name: _c1, dtype: int64
 
     """
-    return
+    conteo_por_letra = tbl0['_c1'].value_counts()
+    conteo_por_letra.name = '_c1'
+    conteo_por_letra.index.name = None
+    return conteo_por_letra.sort_index()
 
 
 def pregunta_04():
@@ -65,7 +66,10 @@ def pregunta_04():
     E    4.785714
     Name: _c2, dtype: float64
     """
-    return
+    prom_por_letra = tbl0.groupby('_c1')['_c2'].mean()
+    prom_por_letra.name = '_c2'
+    prom_por_letra.index.name = None
+    return prom_por_letra
 
 
 def pregunta_05():
@@ -82,8 +86,11 @@ def pregunta_05():
     E    9
     Name: _c2, dtype: int64
     """
-    return
 
+    max_por_letra = tbl0.groupby('_c1')['_c2'].max()
+    max_por_letra.name = '_c2'
+    max_por_letra.index.name = None
+    return max_por_letra
 
 def pregunta_06():
     """
@@ -94,7 +101,7 @@ def pregunta_06():
     ['A', 'B', 'C', 'D', 'E', 'F', 'G']
 
     """
-    return
+    return sorted(tbl1['_c4'].str.upper().unique())
 
 
 def pregunta_07():
@@ -110,7 +117,10 @@ def pregunta_07():
     E    67
     Name: _c2, dtype: int64
     """
-    return
+    suma_por_letra = tbl0.groupby('_c1')['_c2'].sum()
+    suma_por_letra.name = '_c2'
+    suma_por_letra.index.name = None
+    return suma_por_letra
 
 
 def pregunta_08():
@@ -128,8 +138,8 @@ def pregunta_08():
     39   39   E    5  1998-01-26    44
 
     """
-    return
-
+    tbl0['suma'] = tbl0['_c0'] + tbl0['_c2']
+    return tbl0
 
 def pregunta_09():
     """
@@ -146,7 +156,8 @@ def pregunta_09():
     39   39   E    5  1998-01-26  1998
 
     """
-    return
+    tbl0['year'] = tbl0['_c3'].str[:4]
+    return tbl0
 
 
 def pregunta_10():
@@ -163,7 +174,10 @@ def pregunta_10():
     3   D                  1:2:3:5:5:7
     4   E  1:1:2:3:3:4:5:5:5:6:7:8:8:9
     """
-    return
+    tabla = tbl0.groupby('_c1')['_c2'].agg(lambda values: ':'.join(str(v) for v in sorted(values))).reset_index().set_index('_c1')
+
+    return tabla
+
 
 
 def pregunta_11():
@@ -182,7 +196,8 @@ def pregunta_11():
     38   38      d,e
     39   39    a,d,f
     """
-    return
+    tabla = tbl1.groupby('_c0')['_c4'].agg(lambda values: ','.join(str(v) for v in sorted(values))).reset_index()
+    return tabla
 
 
 def pregunta_12():
